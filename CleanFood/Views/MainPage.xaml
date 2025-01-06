@@ -1,0 +1,223 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:CleanFood"
+             x:Class="CleanFood.MainPage" 
+             BackgroundColor="CornflowerBlue"
+             Title="            Search For Locations" 
+             HideSoftInputOnTapped="True">
+
+    <ContentPage.Content>
+        <StackLayout BackgroundColor="CornflowerBlue"
+                     Padding ="10">
+<!--
+            <Label x:Name="SearchLabel"
+                    FontSize="Medium"
+                    TextColor="White"
+                    IsVisible="True"
+                    Text="Search For Locations By:"
+                    HorizontalOptions="Fill" 
+                    HorizontalTextAlignment="Center" Margin="0,0,0,0"/>
+  -->          
+            <StackLayout BackgroundColor="CornflowerBlue"
+                         IsVisible="{Binding IsNameStackViewVisible}">
+
+            <Label x:Name="ErrorLabel1"
+                    FontSize="Small"
+                    TextColor="White"
+                    IsVisible="True"
+                    HorizontalOptions="Fill" 
+                    HorizontalTextAlignment="Center"
+                    Margin="0,5,0,5"/>
+
+            <Label x:Name="NameSearchLabel"
+                    FontSize="Medium"
+                    TextColor="White"
+                    IsVisible="True"
+                    Text="Name/Type:"
+                    HorizontalOptions="Fill" 
+                    HorizontalTextAlignment="Start" Margin="0,0,0,5"/>
+
+            <Entry x:Name="NameSearchEntry"
+                    Placeholder="Search Name/Type"
+                    Completed="OnNameSearchCompleted"
+                    TextChanged="NameSearchEntry_TextChanged"
+                    BackgroundColor="White"
+                    TextColor="Black"
+                    ScaleY="1.2" 
+                    VerticalOptions="Center"
+                    Margin="0,10,0,0"/>
+
+                <ListView x:Name="NameListView"
+                    BackgroundColor="white"
+                    ItemsSource="{Binding PaginatedFacilities}"
+                    VerticalOptions="Fill"
+                    IsVisible="{Binding IsNameListViewVisible}"
+                    ItemTapped="NameListView_ItemTapped"
+                    ItemAppearing="NameListView_ItemAppearing" 
+                    MaximumHeightRequest="270">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout Orientation="Vertical">
+                                    <Label Text="{Binding .}" 
+                                       FontAttributes="Bold"
+                                       Margin="15,8,0,0"  
+                                       TextColor="Black"  />
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+        
+            <StackLayout BackgroundColor="CornflowerBlue"
+                         IsVisible="{Binding IsZipcodeStackViewVisible}" Margin="0,20,0,0"
+                         >
+                <!--
+            <Label x:Name="OrLabel1"
+                    FontSize="Medium"
+                    TextColor="White"
+                    IsVisible="True"
+                    Text="OR:"
+                    HorizontalOptions="Fill" 
+                    HorizontalTextAlignment="Center"
+                    Margin="0,5,0,5"/>
+-->
+            <Label x:Name="ErrorLabel2"
+                    FontSize="Small"
+                    TextColor="White"
+                    IsVisible="True"
+                    Text=""
+                    HorizontalOptions="Fill" 
+                    HorizontalTextAlignment="Center"
+                    Margin="0,5,0,5"/>
+
+            <Label x:Name="ZipcodeSearchLabel"
+                    FontSize="Medium"
+                    TextColor="White"
+                    IsVisible="True"
+                    Text="Zipcode:"
+                    HorizontalOptions="Fill" 
+                    HorizontalTextAlignment="Start" 
+                    Margin="0,5,0,5"/>
+
+            <Entry x:Name="ZipcodeSearchEntry"
+                    Placeholder="Search Zipcode"
+                    Completed="OnZipcodeSearchCompleted"
+                    TextChanged="ZipcodeSearchEntry_TextChanged"
+                    BackgroundColor="White"
+                    TextColor="Black"
+                    ScaleY="1.2" 
+                    VerticalOptions="Center" 
+                    Margin="0,10,0,0"/>
+
+            <ListView x:Name="ZipcodeListView"
+            BackgroundColor="white"
+            ItemsSource="{Binding FilteredZipcodes}"
+            VerticalOptions="Fill"
+            IsVisible="{Binding IsZipcodeListViewVisible}"
+            ItemTapped="ZipcodeListView_ItemTapped"
+            MaximumHeightRequest="300">
+                    <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Orientation="Vertical">
+                                <Label Text="{Binding Id}" 
+                                FontAttributes="Bold"
+                                Margin="15,8,0,0" 
+                                TextColor="Black"/>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            </StackLayout>
+
+            <StackLayout BackgroundColor="CornflowerBlue"
+                        IsVisible="{Binding IsCountyStackViewVisible}" Margin="0,20,0,0">
+                <!--
+            <Label x:Name="OrLabel2"
+                    FontSize="Medium"
+                    TextColor="White"
+                    IsVisible="True"
+                    Text="OR:"
+                    HorizontalOptions="Fill" 
+                    HorizontalTextAlignment="Center"
+                    Margin="0,5,0,5"/>
+-->
+            <Label x:Name="ErrorLabel3"
+                    FontSize="Small"
+                    TextColor="White"
+                    IsVisible="True"
+                    Text=""
+                    HorizontalOptions="Fill" 
+                    HorizontalTextAlignment="Center"
+                    Margin="0,5,0,5"/>
+
+            <Label x:Name="CountySearchLabel"
+                    FontSize="Medium"
+                    TextColor="White"
+                    IsVisible="True"
+                    Text="County:"
+                    HorizontalOptions="Fill" 
+                    HorizontalTextAlignment="Start" 
+                    Margin="0,5,0,5"/>
+
+            <Entry x:Name="CountySearchEntry"
+                    Placeholder="Search County"
+                    Completed="OnCountySearchCompleted"
+                    TextChanged="CountySearchEntry_TextChanged"
+                    BackgroundColor="White"
+                    TextColor="Black"
+                    ScaleY="1.2" 
+                    VerticalOptions="Center" Margin="0,10,0,0"/>
+
+            <ListView x:Name="CountyListView"
+                BackgroundColor="white"
+                ItemsSource="{Binding FilteredCounties}"
+                VerticalOptions="Fill"
+                IsVisible="{Binding IsCountyListViewVisible}"
+                ItemTapped="CountyListView_ItemTapped"
+                MaximumHeightRequest="300">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Orientation="Vertical">
+                                <Label Text="{Binding Name}" 
+                                    FontAttributes="Bold"
+                                    Margin="15,8,0,0"   
+                                    TextColor="Black"/>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            </StackLayout>
+
+            <StackLayout BackgroundColor="CornflowerBlue">
+                <!--
+            <Label x:Name="OrLabel3"
+                    FontSize="Medium"
+                    TextColor="White"
+                    IsVisible="True"
+                    Text="OR:"
+                    HorizontalOptions="Fill" 
+                    HorizontalTextAlignment="Center"
+                    Margin="0,20,0,5"/>
+-->
+            <Button x:Name="SearchAllButton"
+                    Clicked="OnSearchAllButtonClicked"
+                    BackgroundColor="SkyBlue"
+                    ScaleY="1.5" 
+                    VerticalOptions="Center" 
+                    BorderWidth="2" 
+                    BorderColor="white"
+                    Text = "Search All Establishments Manually"
+                    FontAutoScalingEnabled="True"
+                    
+                    Margin="0,80,0,0"/>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
