@@ -9,7 +9,7 @@
 *.user
 *.userosscache
 *.sln.docstates
-AndroidManifest.xml
+CleanFood/Platforms/Android/AndroidManifest.xml
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
