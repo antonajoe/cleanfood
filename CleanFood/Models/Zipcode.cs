@@ -5,4 +5,6 @@ namespace CleanFood.Models
     {
         public string Id { get; set; }
     }
+
+    // are other changes synced
 }
