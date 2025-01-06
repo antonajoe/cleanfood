@@ -10,9 +10,7 @@
         public double Critical_Violations { get; set; }
         public double Critical_Not_Corrected { get; set; }
         public double Non_Critical_Violations { get; set; }
-        public string Description { get; set; }
         public string County { get; set; }
-        public string Facility_Address { get; set; }
         public string City { get; set; }
         public string ZipCode { get; set; }
         public string Inspection_Comments { get; set; }
