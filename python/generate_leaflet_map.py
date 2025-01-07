@@ -36,7 +36,7 @@ subs = df.values
 print(subs[0])
 print(len(subs))
 
-# centroid value for Cayuga county_df
+# # centroid value for New York State
 state_centroid = [42.7958, -75.4658]
 
 # create the map
@@ -56,7 +56,7 @@ for item in tqdm(subs):
     html = template.render()
     iframe = folium.IFrame(html=html, width=300, height=300)
     popup = folium.Popup(iframe, max_width=500, parse_html=True)
-    tooltip = folium.Tooltip(text = {item[0]})
+    tooltip = folium.Tooltip(text = {item[1]})
     folium.Marker(
         location=[item[12], item[13]],
         popup=popup,
