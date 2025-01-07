@@ -67,7 +67,7 @@ namespace CleanFood
             while (line != null)
             {
                 items = line.Split(";");
-                if (items.Length != 18)
+                if (items.Length != 16)
                 {
                     Console.WriteLine("ERROR AT INDEX " + items[0]);
                     Console.WriteLine(items.Length);
@@ -84,19 +84,19 @@ namespace CleanFood
                         Critical_Violations = double.Parse(items[5]),
                         Critical_Not_Corrected = double.Parse(items[6]),
                         Non_Critical_Violations = double.Parse(items[7]),
-                        Description = items[8],
-                        County = items[9],
-                        Facility_Address = items[10],
-                        City = items[11],
-                        ZipCode = items[12],
-                        Inspection_Comments = items[13],
-                        Latitude = double.Parse(items[14]),
-                        Longitude = double.Parse(items[15]),
-                        State = items[16],
-                        DisplayName = items[17]
+                        County = items[8],
+                        City = items[9],
+                        ZipCode = items[10],
+                        Inspection_Comments = items[11],
+                        Latitude = double.Parse(items[12]),
+                        Longitude = double.Parse(items[13]),
+                        State = items[14],
+                        DisplayName = items[15]
                     };
                     facilities.Add(facility);
+                    Console.WriteLine(facility.Name, facility.DisplayName);
                     nameTrie.Insert(facility.Name, facility.DisplayName);
+                    
                 }
                 line = reader.ReadLine();
             }
@@ -137,6 +137,9 @@ namespace CleanFood
                 line = reader2.ReadLine();
             }
         }
+
+        // TODO:
+        // Add input validation to the entry controls, all alphas for name and county, all numerics for zipcode
 
         private async void OnNameSearchCompleted(object sender, EventArgs e)
         {
@@ -198,7 +201,7 @@ namespace CleanFood
             }
             else
             {
-                ErrorLabel2.Text = $"Please Enter a 5 Digit Zipcode.";
+                ErrorLabel2.Text = $"Please Enter at Least 4 Digits.";
             }
         }
 
@@ -240,6 +243,48 @@ namespace CleanFood
             await Navigation.PushAsync(new NavigationPage(new LeafletMapPage()));
         }
 
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            nameDebounceSubscription.Dispose();
+            zipcodeDebounceSubscription.Dispose();
+            countyDebounceSubscription.Dispose();
+        }
+
+        protected override void OnAppearing()
+        {
+            Console.WriteLine("ONAPPEARING CALLED");
+            base.OnAppearing();
+
+            if (viewModel != null)
+            {
+                // Clear search texts
+                viewModel.NameSearchText = string.Empty;
+                viewModel.ZipcodeSearchText = string.Empty;
+                viewModel.CountySearchText = string.Empty;
+
+                // Reset visibility states
+                viewModel.IsNameStackViewVisible = true;
+                viewModel.IsZipcodeStackViewVisible = true;
+                viewModel.IsCountyStackViewVisible = true;
+                viewModel.IsNameListViewVisible = false;
+                viewModel.IsZipcodeListViewVisible = false;
+                viewModel.IsCountyListViewVisible = false;
+
+                nameDebounceSubscription = nameTextChangedSubject
+                    .Throttle(TimeSpan.FromMilliseconds(200))
+                    .Subscribe(OnNameDebouncedTextChanged);
+
+                zipcodeDebounceSubscription = zipcodeTextChangedSubject
+                    .Throttle(TimeSpan.FromMilliseconds(200))
+                    .Subscribe(OnZipcodeDebouncedTextChanged);
+
+                countyDebounceSubscription = countyTextChangedSubject
+                    .Throttle(TimeSpan.FromMilliseconds(200))
+                    .Subscribe(OnCountyDebouncedTextChanged);
+            }
+        }
+        
         private void NameSearchEntry_TextChanged(object sender, TextChangedEventArgs e)
         {
             nameTextChangedSubject.OnNext(e.NewTextValue);
@@ -278,6 +323,7 @@ namespace CleanFood
 
         private void OnZipcodeDebouncedTextChanged(string text)
         {
+            
             Console.WriteLine("ZIPCODE ENTRY: " + text);
             if (text.Length > 2)
             {
@@ -338,42 +384,5 @@ namespace CleanFood
             }
         }
 
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
-
-            // Clear search texts
-            viewModel.NameSearchText = string.Empty;
-            viewModel.ZipcodeSearchText = string.Empty;
-            viewModel.CountySearchText = string.Empty;
-
-            // Reset visibility states
-            viewModel.IsNameStackViewVisible = true;
-            viewModel.IsZipcodeStackViewVisible = true;
-            viewModel.IsCountyStackViewVisible = true;
-            viewModel.IsNameListViewVisible = false;
-            viewModel.IsZipcodeListViewVisible = false;
-            viewModel.IsCountyListViewVisible = false;
-
-            nameDebounceSubscription = nameTextChangedSubject
-                .Throttle(TimeSpan.FromMilliseconds(200))
-                .Subscribe(OnNameDebouncedTextChanged);
-
-            zipcodeDebounceSubscription = zipcodeTextChangedSubject
-                .Throttle(TimeSpan.FromMilliseconds(200))
-                .Subscribe(OnZipcodeDebouncedTextChanged);
-
-            countyDebounceSubscription = countyTextChangedSubject
-                .Throttle(TimeSpan.FromMilliseconds(200))
-                .Subscribe(OnCountyDebouncedTextChanged);
-        }
-
-        protected override void OnDisappearing()
-        {
-            base.OnDisappearing();
-            nameDebounceSubscription.Dispose();
-            zipcodeDebounceSubscription.Dispose();
-            countyDebounceSubscription.Dispose();
-        }
     }
 }

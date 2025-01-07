@@ -109,7 +109,7 @@
 
 	<ItemGroup>
 	  <MauiAsset Update="Resources\Raw\inspections.csv">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </MauiAsset>
 	</ItemGroup>
 
