@@ -112,7 +112,7 @@ print(df.columns)
 df.fillna(0, inplace = True)
 
 # save to .csv to CleanFood resource folder
-savepath = r'PATH TO DATA FILE'
+savepath = r'PATH TO RESOURCES FOLDER'
 df.to_csv(savepath, sep=';', header=False, index=False)
 
 # save .csv locally
